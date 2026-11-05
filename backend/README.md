@@ -62,3 +62,4 @@ npm test
 npm run dev
 ```
 API will run at `http://localhost:5000` with health check at `http://localhost:5000/api/v1/health`.
+

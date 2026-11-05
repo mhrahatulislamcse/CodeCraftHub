@@ -27,3 +27,4 @@ describe('Phase 1 - Server Smoke & Health API Tests', () => {
     expect(res.body.error).toHaveProperty('message');
   });
 });
+

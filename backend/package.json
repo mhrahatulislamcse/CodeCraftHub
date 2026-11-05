@@ -9,7 +9,12 @@
     "dev": "nodemon src/server.js",
     "test": "vitest run",
     "test:watch": "vitest",
-    "verify:env": "node scripts/verify-env.js"
+    "verify:env": "node scripts/verify-env.js",
+    "db:init": "node database/init-db.js",
+    "db:migrate": "node database/migrate.js",
+    "db:seed": "node database/seed.js",
+    "db:reset": "node database/reset.js",
+    "db:setup": "node database/init-db.js && node database/migrate.js && node database/seed.js"
   },
   "keywords": [
     "lms",
@@ -38,3 +43,4 @@
     "vitest": "^3.0.7"
   }
 }
+

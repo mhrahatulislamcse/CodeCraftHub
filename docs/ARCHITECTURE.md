@@ -89,3 +89,4 @@ CodeCraftHub is structured as a decoupled full-stack application following layer
 - Progress: `/api/v1/progress/*`
 - AI: `/api/v1/ai/*`
 - Admin: `/api/v1/admin/*`
+
