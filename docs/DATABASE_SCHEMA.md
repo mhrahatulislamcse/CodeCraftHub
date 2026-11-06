@@ -246,3 +246,4 @@ Real-time user alerts and learning reminders.
    - Sets `enrollments.progress_percentage = ROUND((C / N) * 100, 2)`
    - When progress reaches 100%, automatically sets `status = 'completed'` and records `completed_at = CURRENT_TIMESTAMP`.
    - Prevents stale, redundant, or contradictory progress metrics.
+

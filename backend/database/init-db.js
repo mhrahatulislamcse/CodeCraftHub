@@ -61,3 +61,4 @@ if (process.argv[1] && process.argv[1].endsWith('init-db.js')) {
     process.exit(res.success ? 0 : 1);
   });
 }
+

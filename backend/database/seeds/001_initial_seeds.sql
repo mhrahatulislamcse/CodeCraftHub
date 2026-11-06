@@ -3,6 +3,7 @@
 -- Description: Realistic initial seed data for development and testing
 -- All passwords are: Password123!
 -- Bcrypt Hash: $2a$10$FMncnQ/YNtlrIlP/XZ5k0.tfwfQh7/A.vIzip2GPwPtZoX0q5Lovu
+-- Note on UUIDs: PostgreSQL requires standard hexadecimal characters [0-9a-f]
 -- ============================================================================
 
 -- ----------------------------------------------------------------------------
@@ -18,20 +19,20 @@ ON CONFLICT (id) DO UPDATE SET name = EXCLUDED.name, description = EXCLUDED.desc
 SELECT setval('roles_id_seq', (SELECT MAX(id) FROM roles));
 
 -- ----------------------------------------------------------------------------
--- 2. SEED USERS (Deterministic UUIDs)
+-- 2. SEED USERS (Valid Hexadecimal UUIDs)
 -- ----------------------------------------------------------------------------
--- Admin: a0000000-0000-0000-0000-000000000001
--- Instructor 1: i0000000-0000-0000-0000-000000000001 (Sarah Drasner)
--- Instructor 2: i0000000-0000-0000-0000-000000000002 (Alex Chen)
--- Student 1: s0000000-0000-0000-0000-000000000001 (Marcus Vance)
--- Student 2: s0000000-0000-0000-0000-000000000002 (Elena Rostova)
+-- Admin:        a0000000-0000-0000-0000-000000000001
+-- Instructor 1: ba000000-0000-0000-0000-000000000001 (Sarah Drasner)
+-- Instructor 2: ba000000-0000-0000-0000-000000000002 (Alex Chen)
+-- Student 1:    da000000-0000-0000-0000-000000000001 (Marcus Vance)
+-- Student 2:    da000000-0000-0000-0000-000000000002 (Elena Rostova)
 
 INSERT INTO users (id, email, password_hash, role_id, is_active, email_verified) VALUES
 ('a0000000-0000-0000-0000-000000000001', 'admin@codecrafthub.dev', '$2a$10$FMncnQ/YNtlrIlP/XZ5k0.tfwfQh7/A.vIzip2GPwPtZoX0q5Lovu', 3, true, true),
-('i0000000-0000-0000-0000-000000000001', 'sarah.dr@codecrafthub.dev', '$2a$10$FMncnQ/YNtlrIlP/XZ5k0.tfwfQh7/A.vIzip2GPwPtZoX0q5Lovu', 2, true, true),
-('i0000000-0000-0000-0000-000000000002', 'alex.chen@codecrafthub.dev', '$2a$10$FMncnQ/YNtlrIlP/XZ5k0.tfwfQh7/A.vIzip2GPwPtZoX0q5Lovu', 2, true, true),
-('s0000000-0000-0000-0000-000000000001', 'marcus.vance@gmail.com', '$2a$10$FMncnQ/YNtlrIlP/XZ5k0.tfwfQh7/A.vIzip2GPwPtZoX0q5Lovu', 1, true, true),
-('s0000000-0000-0000-0000-000000000002', 'elena.rostova@gmail.com', '$2a$10$FMncnQ/YNtlrIlP/XZ5k0.tfwfQh7/A.vIzip2GPwPtZoX0q5Lovu', 1, true, true)
+('ba000000-0000-0000-0000-000000000001', 'sarah.dr@codecrafthub.dev', '$2a$10$FMncnQ/YNtlrIlP/XZ5k0.tfwfQh7/A.vIzip2GPwPtZoX0q5Lovu', 2, true, true),
+('ba000000-0000-0000-0000-000000000002', 'alex.chen@codecrafthub.dev', '$2a$10$FMncnQ/YNtlrIlP/XZ5k0.tfwfQh7/A.vIzip2GPwPtZoX0q5Lovu', 2, true, true),
+('da000000-0000-0000-0000-000000000001', 'marcus.vance@gmail.com', '$2a$10$FMncnQ/YNtlrIlP/XZ5k0.tfwfQh7/A.vIzip2GPwPtZoX0q5Lovu', 1, true, true),
+('da000000-0000-0000-0000-000000000002', 'elena.rostova@gmail.com', '$2a$10$FMncnQ/YNtlrIlP/XZ5k0.tfwfQh7/A.vIzip2GPwPtZoX0q5Lovu', 1, true, true)
 ON CONFLICT (email) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
@@ -40,13 +41,13 @@ ON CONFLICT (email) DO NOTHING;
 INSERT INTO user_profiles (user_id, first_name, last_name, headline, bio, avatar_url, github_url, linkedin_url, learning_goals, preferred_difficulty) VALUES
 ('a0000000-0000-0000-0000-000000000001', 'Devon', 'Archer', 'Platform Lead & Systems Architect', 'Oversees CodeCraftHub core infrastructure and curriculum quality.', 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop&crop=face', 'https://github.com/codecrafthub', 'https://linkedin.com', '{"Maintain platform stability", "Monitor AI metrics"}', 'All Levels'),
 
-('i0000000-0000-0000-0000-000000000001', 'Sarah', 'Drasner', 'Senior Full-Stack Architect & Author', 'Former VP at Netlify, author, and distributed frontend systems expert.', 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&h=200&fit=crop&crop=face', 'https://github.com/sdras', 'https://linkedin.com', '{"Build deep modern web courses", "Mentor rising engineers"}', 'All Levels'),
+('ba000000-0000-0000-0000-000000000001', 'Sarah', 'Drasner', 'Senior Full-Stack Architect & Author', 'Former VP at Netlify, author, and distributed frontend systems expert.', 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&h=200&fit=crop&crop=face', 'https://github.com/sdras', 'https://linkedin.com', '{"Build deep modern web courses", "Mentor rising engineers"}', 'All Levels'),
 
-('i0000000-0000-0000-0000-000000000002', 'Alex', 'Chen', 'Principal Cloud & Database Engineer', 'Specialized in PostgreSQL performance tuning, Kubernetes, and high-throughput microservices.', 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face', 'https://github.com/alexchen-dev', 'https://linkedin.com', '{"Demystify distributed systems", "Teach production PostgreSQL"}', 'All Levels'),
+('ba000000-0000-0000-0000-000000000002', 'Alex', 'Chen', 'Principal Cloud & Database Engineer', 'Specialized in PostgreSQL performance tuning, Kubernetes, and high-throughput microservices.', 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face', 'https://github.com/alexchen-dev', 'https://linkedin.com', '{"Demystify distributed systems", "Teach production PostgreSQL"}', 'All Levels'),
 
-('s0000000-0000-0000-0000-000000000001', 'Marcus', 'Vance', 'Frontend Developer seeking Full-Stack Mastery', 'Self-taught engineer with solid React and JavaScript skills, leveling up in Node.js, Express, and PostgreSQL.', 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=face', 'https://github.com/marcusvance', 'https://linkedin.com', '{"Become a confident Full-Stack Engineer", "Master PostgreSQL transactions", "Deploy Docker apps"}', 'Intermediate'),
+('da000000-0000-0000-0000-000000000001', 'Marcus', 'Vance', 'Frontend Developer seeking Full-Stack Mastery', 'Self-taught engineer with solid React and JavaScript skills, leveling up in Node.js, Express, and PostgreSQL.', 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=face', 'https://github.com/marcusvance', 'https://linkedin.com', '{"Become a confident Full-Stack Engineer", "Master PostgreSQL transactions", "Deploy Docker apps"}', 'Intermediate'),
 
-('s0000000-0000-0000-0000-000000000002', 'Elena', 'Rostova', 'Computer Science Graduate & Backend Enthusiast', 'Focused on relational databases, database query optimization, and clean API design.', 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop&crop=face', 'https://github.com/elenarostova', 'https://linkedin.com', '{"Pass technical backend interviews", "Architect resilient REST APIs"}', 'Beginner')
+('da000000-0000-0000-0000-000000000002', 'Elena', 'Rostova', 'Computer Science Graduate & Backend Enthusiast', 'Focused on relational databases, database query optimization, and clean API design.', 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop&crop=face', 'https://github.com/elenarostova', 'https://linkedin.com', '{"Pass technical backend interviews", "Architect resilient REST APIs"}', 'Beginner')
 ON CONFLICT (user_id) DO UPDATE SET
   first_name = EXCLUDED.first_name,
   last_name = EXCLUDED.last_name,
@@ -68,14 +69,14 @@ ON CONFLICT (slug) DO NOTHING;
 -- 5. SEED SKILLS
 -- ----------------------------------------------------------------------------
 INSERT INTO skills (id, name, slug, category, description) VALUES
-('k0000000-0000-0000-0000-000000000001', 'JavaScript (ES6+)', 'javascript', 'Frontend', 'Modern ECMAScript specifications, async/await, closures, and prototypes.'),
-('k0000000-0000-0000-0000-000000000002', 'React.js', 'react', 'Frontend', 'Component lifecycle, hooks, context API, and high-performance state management.'),
-('k0000000-0000-0000-0000-000000000003', 'Node.js', 'nodejs', 'Backend', 'Event-driven asynchronous I/O, server architecture, and streams.'),
-('k0000000-0000-0000-0000-000000000004', 'Express.js', 'express', 'Backend', 'RESTful API routing, middleware chaining, and security practices.'),
-('k0000000-0000-0000-0000-000000000005', 'PostgreSQL', 'postgresql', 'Database', 'Relational modeling, complex queries, indexing, CTEs, and ACID transactions.'),
-('k0000000-0000-0000-0000-000000000006', 'Docker', 'docker', 'DevOps', 'Multi-stage Dockerfiles, compose stacks, container isolation, and networks.'),
-('k0000000-0000-0000-0000-000000000007', 'REST API Design', 'rest-api', 'Backend', 'Idempotent endpoints, HTTP status standards, error schemas, and versioning.'),
-('k0000000-0000-0000-0000-000000000008', 'Git & GitHub', 'git', 'DevOps', 'Version control branching models, rebasing, merge conflicts, and PR reviews.')
+('fa000000-0000-0000-0000-000000000001', 'JavaScript (ES6+)', 'javascript', 'Frontend', 'Modern ECMAScript specifications, async/await, closures, and prototypes.'),
+('fa000000-0000-0000-0000-000000000002', 'React.js', 'react', 'Frontend', 'Component lifecycle, hooks, context API, and high-performance state management.'),
+('fa000000-0000-0000-0000-000000000003', 'Node.js', 'nodejs', 'Backend', 'Event-driven asynchronous I/O, server architecture, and streams.'),
+('fa000000-0000-0000-0000-000000000004', 'Express.js', 'express', 'Backend', 'RESTful API routing, middleware chaining, and security practices.'),
+('fa000000-0000-0000-0000-000000000005', 'PostgreSQL', 'postgresql', 'Database', 'Relational modeling, complex queries, indexing, CTEs, and ACID transactions.'),
+('fa000000-0000-0000-0000-000000000006', 'Docker', 'docker', 'DevOps', 'Multi-stage Dockerfiles, compose stacks, container isolation, and networks.'),
+('fa000000-0000-0000-0000-000000000007', 'REST API Design', 'rest-api', 'Backend', 'Idempotent endpoints, HTTP status standards, error schemas, and versioning.'),
+('fa000000-0000-0000-0000-000000000008', 'Git & GitHub', 'git', 'DevOps', 'Version control branching models, rebasing, merge conflicts, and PR reviews.')
 ON CONFLICT (slug) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
@@ -87,7 +88,7 @@ INSERT INTO courses (id, title, slug, description, instructor_id, thumbnail_url,
   'Production Full-Stack React & Node Architecture',
   'production-fullstack-react-node',
   'Master the complete architecture required to build, secure, and deploy high-performance full-stack web applications using React, Express, and PostgreSQL.',
-  'i0000000-0000-0000-0000-000000000001',
+  'ba000000-0000-0000-0000-000000000001',
   'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&h=450&fit=crop',
   'Intermediate',
   18.5,
@@ -104,7 +105,7 @@ INSERT INTO courses (id, title, slug, description, instructor_id, thumbnail_url,
   'PostgreSQL Mastery: High-Performance Schema & Queries',
   'postgresql-mastery-schema-queries',
   'Deep dive into PostgreSQL internals, index strategies, transaction isolation levels, query execution planning, and schema migrations without downtime.',
-  'i0000000-0000-0000-0000-000000000002',
+  'ba000000-0000-0000-0000-000000000002',
   'https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=800&h=450&fit=crop',
   'Advanced',
   14.0,
@@ -121,7 +122,7 @@ INSERT INTO courses (id, title, slug, description, instructor_id, thumbnail_url,
   'Docker & Microservices for Developers',
   'docker-microservices-developers',
   'Containerize backend services, manage local multi-container development environments with Docker Compose, and configure reproducible production builds.',
-  'i0000000-0000-0000-0000-000000000002',
+  'ba000000-0000-0000-0000-000000000002',
   'https://images.unsplash.com/photo-1607799279861-4dd421887fb3?w=800&h=450&fit=crop',
   'Intermediate',
   12.0,
@@ -138,7 +139,7 @@ INSERT INTO courses (id, title, slug, description, instructor_id, thumbnail_url,
   'Modern JavaScript: From ES6+ to Architecture',
   'modern-javascript-architecture',
   'Master modern JavaScript fundamentals, async execution loop, closures, modular design, functional patterns, and clean code principles.',
-  'i0000000-0000-0000-0000-000000000001',
+  'ba000000-0000-0000-0000-000000000001',
   'https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?w=800&h=450&fit=crop',
   'Beginner',
   10.0,
@@ -167,13 +168,13 @@ ON CONFLICT DO NOTHING;
 -- 8. SEED COURSE SKILLS
 -- ----------------------------------------------------------------------------
 INSERT INTO course_skills (course_id, skill_id, skill_level_gained) VALUES
-('b0000000-0000-0000-0000-000000000001', 'k0000000-0000-0000-0000-000000000002', 'Advanced'),     -- React
-('b0000000-0000-0000-0000-000000000001', 'k0000000-0000-0000-0000-000000000003', 'Intermediate'), -- Node.js
-('b0000000-0000-0000-0000-000000000001', 'k0000000-0000-0000-0000-000000000004', 'Advanced'),     -- Express
-('b0000000-0000-0000-0000-000000000001', 'k0000000-0000-0000-0000-000000000005', 'Intermediate'), -- PostgreSQL
-('b0000000-0000-0000-0000-000000000002', 'k0000000-0000-0000-0000-000000000005', 'Expert'),       -- PostgreSQL
-('b0000000-0000-0000-0000-000000000003', 'k0000000-0000-0000-0000-000000000006', 'Advanced'),     -- Docker
-('b0000000-0000-0000-0000-000000000004', 'k0000000-0000-0000-0000-000000000001', 'Intermediate')  -- JavaScript
+('b0000000-0000-0000-0000-000000000001', 'fa000000-0000-0000-0000-000000000002', 'Advanced'),     -- React
+('b0000000-0000-0000-0000-000000000001', 'fa000000-0000-0000-0000-000000000003', 'Intermediate'), -- Node.js
+('b0000000-0000-0000-0000-000000000001', 'fa000000-0000-0000-0000-000000000004', 'Advanced'),     -- Express
+('b0000000-0000-0000-0000-000000000001', 'fa000000-0000-0000-0000-000000000005', 'Intermediate'), -- PostgreSQL
+('b0000000-0000-0000-0000-000000000002', 'fa000000-0000-0000-0000-000000000005', 'Expert'),       -- PostgreSQL
+('b0000000-0000-0000-0000-000000000003', 'fa000000-0000-0000-0000-000000000006', 'Advanced'),     -- Docker
+('b0000000-0000-0000-0000-000000000004', 'fa000000-0000-0000-0000-000000000001', 'Intermediate')  -- JavaScript
 ON CONFLICT DO NOTHING;
 
 -- ----------------------------------------------------------------------------
@@ -181,7 +182,7 @@ ON CONFLICT DO NOTHING;
 -- ----------------------------------------------------------------------------
 INSERT INTO lessons (id, course_id, title, slug, description, video_url, content_markdown, order_index, duration_minutes, is_free_preview) VALUES
 (
-  'l0000000-0000-0000-0000-000000000001',
+  'ea000000-0000-0000-0000-000000000001',
   'b0000000-0000-0000-0000-000000000001',
   'Architectural Overview & Decoupled Design Patterns',
   'architectural-overview-decoupled-design',
@@ -209,7 +210,7 @@ export const getCourseById = async (req, res, next) => {
   true
 ),
 (
-  'l0000000-0000-0000-0000-000000000002',
+  'ea000000-0000-0000-0000-000000000002',
   'b0000000-0000-0000-0000-000000000001',
   'Configuring Express, Security Headers & PostgreSQL Pool',
   'configuring-express-security-postgresql-pool',
@@ -233,7 +234,7 @@ export const pool = new Pool({
   false
 ),
 (
-  'l0000000-0000-0000-0000-000000000003',
+  'ea000000-0000-0000-0000-000000000003',
   'b0000000-0000-0000-0000-000000000001',
   'JWT Authentication, Refresh Tokens & Role-Based Access Control',
   'jwt-auth-refresh-tokens-rbac',
@@ -255,7 +256,7 @@ export const requireRole = (...roles) => (req, res, next) => {
   false
 ),
 (
-  'l0000000-0000-0000-0000-000000000004',
+  'ea000000-0000-0000-0000-000000000004',
   'b0000000-0000-0000-0000-000000000001',
   'Interactive Learning Workspace & Live Video Player Integration',
   'interactive-learning-workspace-video-player',
@@ -278,7 +279,7 @@ ON CONFLICT (course_id, order_index) DO NOTHING;
 -- ----------------------------------------------------------------------------
 INSERT INTO lessons (id, course_id, title, slug, description, video_url, content_markdown, order_index, duration_minutes, is_free_preview) VALUES
 (
-  'l0000000-0000-0000-0000-000000000005',
+  'ea000000-0000-0000-0000-000000000005',
   'b0000000-0000-0000-0000-000000000002',
   'Relational Schema Normalization & Constraint Design',
   'relational-schema-normalization-constraints',
@@ -291,7 +292,7 @@ Ensure every non-key attribute is dependent on the key, the whole key, and nothi
   true
 ),
 (
-  'l0000000-0000-0000-0000-000000000006',
+  'ea000000-0000-0000-0000-000000000006',
   'b0000000-0000-0000-0000-000000000002',
   'Mastering Indexes: B-Tree, GIN, Partial & Covering Indexes',
   'mastering-indexes-btree-gin-partial',
@@ -313,7 +314,7 @@ ON CONFLICT (course_id, order_index) DO NOTHING;
 -- ----------------------------------------------------------------------------
 INSERT INTO learning_paths (id, title, slug, description, target_role, difficulty_level, estimated_weeks, thumbnail_url, is_published) VALUES
 (
-  'p0000000-0000-0000-0000-000000000001',
+  'ca000000-0000-0000-0000-000000000001',
   'Full-Stack JavaScript & React Engineer Path',
   'fullstack-javascript-react-engineer',
   'Comprehensive curriculum designed to transform aspiring engineers into high-performing Full-Stack JavaScript and React developers.',
@@ -324,7 +325,7 @@ INSERT INTO learning_paths (id, title, slug, description, target_role, difficult
   true
 ),
 (
-  'p0000000-0000-0000-0000-000000000002',
+  'ca000000-0000-0000-0000-000000000002',
   'Backend & Cloud Database Architect Path',
   'backend-cloud-database-architect',
   'Master PostgreSQL internals, containerized microservices, and resilient API architecture.',
@@ -338,26 +339,26 @@ ON CONFLICT (slug) DO NOTHING;
 
 -- Map courses to paths
 INSERT INTO learning_path_courses (learning_path_id, course_id, sequence_order) VALUES
-('p0000000-0000-0000-0000-000000000001', 'b0000000-0000-0000-0000-000000000004', 1), -- Modern JS first
-('p0000000-0000-0000-0000-000000000001', 'b0000000-0000-0000-0000-000000000001', 2), -- Full-Stack second
-('p0000000-0000-0000-0000-000000000002', 'b0000000-0000-0000-0000-000000000002', 1), -- PostgreSQL Mastery
-('p0000000-0000-0000-0000-000000000002', 'b0000000-0000-0000-0000-000000000003', 2)  -- Docker Microservices
+('ca000000-0000-0000-0000-000000000001', 'b0000000-0000-0000-0000-000000000004', 1), -- Modern JS first
+('ca000000-0000-0000-0000-000000000001', 'b0000000-0000-0000-0000-000000000001', 2), -- Full-Stack second
+('ca000000-0000-0000-0000-000000000002', 'b0000000-0000-0000-0000-000000000002', 1), -- PostgreSQL Mastery
+('ca000000-0000-0000-0000-000000000002', 'b0000000-0000-0000-0000-000000000003', 2)  -- Docker Microservices
 ON CONFLICT DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- 12. SEED USER SKILLS (Marcus Vance)
 -- ----------------------------------------------------------------------------
 INSERT INTO user_skills (user_id, skill_id, proficiency_level, verified_at) VALUES
-('s0000000-0000-0000-0000-000000000001', 'k0000000-0000-0000-0000-000000000001', 'Intermediate', CURRENT_TIMESTAMP),
-('s0000000-0000-0000-0000-000000000001', 'k0000000-0000-0000-0000-000000000002', 'Beginner', CURRENT_TIMESTAMP)
+('da000000-0000-0000-0000-000000000001', 'fa000000-0000-0000-0000-000000000001', 'Intermediate', CURRENT_TIMESTAMP),
+('da000000-0000-0000-0000-000000000001', 'fa000000-0000-0000-0000-000000000002', 'Beginner', CURRENT_TIMESTAMP)
 ON CONFLICT DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- 13. SEED ENROLLMENTS (Marcus Vance & Elena Rostova)
 -- ----------------------------------------------------------------------------
 INSERT INTO enrollments (id, user_id, course_id, enrolled_at, progress_percentage, status) VALUES
-('e0000000-0000-0000-0000-000000000001', 's0000000-0000-0000-0000-000000000001', 'b0000000-0000-0000-0000-000000000001', CURRENT_TIMESTAMP - INTERVAL '5 days', 0.00, 'active'),
-('e0000000-0000-0000-0000-000000000002', 's0000000-0000-0000-0000-000000000002', 'b0000000-0000-0000-0000-000000000002', CURRENT_TIMESTAMP - INTERVAL '2 days', 0.00, 'active')
+('e0000000-0000-0000-0000-000000000001', 'da000000-0000-0000-0000-000000000001', 'b0000000-0000-0000-0000-000000000001', CURRENT_TIMESTAMP - INTERVAL '5 days', 0.00, 'active'),
+('e0000000-0000-0000-0000-000000000002', 'da000000-0000-0000-0000-000000000002', 'b0000000-0000-0000-0000-000000000002', CURRENT_TIMESTAMP - INTERVAL '2 days', 0.00, 'active')
 ON CONFLICT (user_id, course_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
@@ -366,8 +367,8 @@ ON CONFLICT (user_id, course_id) DO NOTHING;
 -- The database trigger trg_sync_enrollment_progress will automatically update enrollments.progress_percentage to 50.00%!
 -- ----------------------------------------------------------------------------
 INSERT INTO lesson_progress (enrollment_id, lesson_id, completed, completed_at) VALUES
-('e0000000-0000-0000-0000-000000000001', 'l0000000-0000-0000-0000-000000000001', true, CURRENT_TIMESTAMP - INTERVAL '4 days'),
-('e0000000-0000-0000-0000-000000000001', 'l0000000-0000-0000-0000-000000000002', true, CURRENT_TIMESTAMP - INTERVAL '2 days')
+('e0000000-0000-0000-0000-000000000001', 'ea000000-0000-0000-0000-000000000001', true, CURRENT_TIMESTAMP - INTERVAL '4 days'),
+('e0000000-0000-0000-0000-000000000001', 'ea000000-0000-0000-0000-000000000002', true, CURRENT_TIMESTAMP - INTERVAL '2 days')
 ON CONFLICT (enrollment_id, lesson_id) DO UPDATE SET completed = EXCLUDED.completed;
 
 -- ----------------------------------------------------------------------------
@@ -375,17 +376,17 @@ ON CONFLICT (enrollment_id, lesson_id) DO UPDATE SET completed = EXCLUDED.comple
 -- ----------------------------------------------------------------------------
 INSERT INTO ai_recommendations (user_id, recommendation_type, recommended_entity_id, reason, confidence_score, metadata_json) VALUES
 (
-  's0000000-0000-0000-0000-000000000001',
+  'da000000-0000-0000-0000-000000000001',
   'next_lesson',
-  'l0000000-0000-0000-0000-000000000003',
+  'ea000000-0000-0000-0000-000000000003',
   'You have completed Lesson 1 and Lesson 2 of Full-Stack React & Node. Continue directly to JWT Authentication to secure your APIs.',
   0.940,
   '{"course_id": "b0000000-0000-0000-0000-000000000001", "lesson_title": "JWT Authentication, Refresh Tokens & Role-Based Access Control"}'
 ),
 (
-  's0000000-0000-0000-0000-000000000001',
+  'da000000-0000-0000-0000-000000000001',
   'skill_gap',
-  'k0000000-0000-0000-0000-000000000006',
+  'fa000000-0000-0000-0000-000000000006',
   'Skill gap detected: Your goal is "Deploy Docker apps", but you have not yet started the Docker & Microservices curriculum.',
   0.890,
   '{"missing_skill": "Docker", "recommended_course_id": "b0000000-0000-0000-0000-000000000003"}'
@@ -395,14 +396,14 @@ INSERT INTO ai_recommendations (user_id, recommendation_type, recommended_entity
 -- 16. SEED REVIEWS
 -- ----------------------------------------------------------------------------
 INSERT INTO reviews (user_id, course_id, rating, review_text) VALUES
-('s0000000-0000-0000-0000-000000000001', 'b0000000-0000-0000-0000-000000000001', 5, 'Exceptional walkthrough of decoupled architecture! The clean separation of controllers and services is already transforming how I write code.'),
-('s0000000-0000-0000-0000-000000000002', 'b0000000-0000-0000-0000-000000000002', 5, 'The best PostgreSQL index optimization explanation I have encountered. Practical, deep, and directly applicable to production workloads.')
+('da000000-0000-0000-0000-000000000001', 'b0000000-0000-0000-0000-000000000001', 5, 'Exceptional walkthrough of decoupled architecture! The clean separation of controllers and services is already transforming how I write code.'),
+('da000000-0000-0000-0000-000000000002', 'b0000000-0000-0000-0000-000000000002', 5, 'The best PostgreSQL index optimization explanation I have encountered. Practical, deep, and directly applicable to production workloads.')
 ON CONFLICT (user_id, course_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- 17. SEED NOTIFICATIONS
 -- ----------------------------------------------------------------------------
 INSERT INTO notifications (user_id, title, message, type, action_url) VALUES
-('s0000000-0000-0000-0000-000000000001', 'Welcome to CodeCraftHub!', 'Explore courses and customize your developer learning goals in your profile.', 'info', '/profile'),
-('s0000000-0000-0000-0000-000000000001', '50% Milestone Reached', 'You are halfway through Production Full-Stack React & Node Architecture!', 'achievement', '/learn/b0000000-0000-0000-0000-000000000001'),
-('s0000000-0000-0000-0000-000000000001', 'AI Recommendation Generated', 'New personalized learning recommendation based on your technical progress.', 'recommendation', '/recommendations');
+('da000000-0000-0000-0000-000000000001', 'Welcome to CodeCraftHub!', 'Explore courses and customize your developer learning goals in your profile.', 'info', '/profile'),
+('da000000-0000-0000-0000-000000000001', '50% Milestone Reached', 'You are halfway through Production Full-Stack React & Node Architecture!', 'achievement', '/learn/b0000000-0000-0000-0000-000000000001'),
+('da000000-0000-0000-0000-000000000001', 'AI Recommendation Generated', 'New personalized learning recommendation based on your technical progress.', 'recommendation', '/recommendations');

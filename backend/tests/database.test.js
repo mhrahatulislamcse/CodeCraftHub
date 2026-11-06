@@ -104,3 +104,4 @@ describe('Phase 2 - PostgreSQL Schema & Migration Integration Tests', () => {
     ).rejects.toThrow();
   });
 });
+

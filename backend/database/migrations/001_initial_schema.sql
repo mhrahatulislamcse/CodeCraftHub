@@ -410,3 +410,4 @@ BEGIN
         FOR EACH ROW EXECUTE FUNCTION sync_enrollment_progress();
     END IF;
 END $$;
+
