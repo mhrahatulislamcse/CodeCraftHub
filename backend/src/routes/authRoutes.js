@@ -36,3 +36,4 @@ router.get('/me', authenticate, getMe);
 router.patch('/change-password', authenticate, validate(changePasswordValidator), changePassword);
 
 export default router;
+

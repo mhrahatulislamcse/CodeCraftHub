@@ -14,3 +14,4 @@ router.patch('/me', authenticate, validate(updateProfileValidator), updateMe);
 router.get('/:id', authenticate, validate(userIdParamValidator), getUserById);
 
 export default router;
+

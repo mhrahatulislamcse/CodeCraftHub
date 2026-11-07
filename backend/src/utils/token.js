@@ -111,3 +111,4 @@ export default {
   generatePasswordResetToken,
   verifyPasswordResetToken,
 };
+

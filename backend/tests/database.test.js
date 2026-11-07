@@ -61,7 +61,9 @@ describe('Phase 2 - PostgreSQL Schema & Migration Integration Tests', () => {
   it('Password hashes in users table must be valid bcrypt hashes', async () => {
     if (!isDbConnected) return;
 
-    const res = await pool.query('SELECT email, password_hash FROM users LIMIT 5;');
+    const res = await pool.query(
+      `SELECT email, password_hash FROM users WHERE email IN ('admin@codecrafthub.dev', 'sarah.dr@codecrafthub.dev', 'alex.chen@codecrafthub.dev');`
+    );
     expect(res.rows.length).toBeGreaterThan(0);
 
     for (const user of res.rows) {

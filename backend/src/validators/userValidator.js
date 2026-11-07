@@ -65,7 +65,7 @@ export const updateProfileValidator = [
 
 export const userIdParamValidator = [
   param('id')
-    .isUUID()
+    .matches(/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/)
     .withMessage('User ID must be a valid UUID'),
 ];
 
@@ -73,3 +73,4 @@ export default {
   updateProfileValidator,
   userIdParamValidator,
 };
+
