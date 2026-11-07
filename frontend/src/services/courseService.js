@@ -44,6 +44,16 @@ export const courseService = {
     const res = await api.get(`/courses/${courseId}/lessons`);
     return res.data?.lessons || [];
   },
+
+  /**
+   * Get single lesson details and workspace content by lesson ID
+   * @param {string} lessonId 
+   */
+  async getLessonById(lessonId) {
+    const res = await api.get(`/lessons/${lessonId}`);
+    return res.data;
+  },
 };
 
 export default courseService;
+
