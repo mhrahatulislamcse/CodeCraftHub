@@ -7,6 +7,7 @@ import lessonRoutes from './lessonRoutes.js';
 import enrollmentRoutes from './enrollmentRoutes.js';
 import progressRoutes from './progressRoutes.js';
 import certificateRoutes from './certificateRoutes.js';
+import aiRoutes from './aiRoutes.js';
 
 const router = Router();
 
@@ -25,5 +26,8 @@ router.use('/lessons', lessonRoutes);
 router.use('/enrollments', enrollmentRoutes);
 router.use('/progress', progressRoutes);
 router.use('/certificates', certificateRoutes);
+
+// Mount AI Personalized Learning & Skill Gap Engine Routes
+router.use('/ai', aiRoutes);
 
 export default router;
