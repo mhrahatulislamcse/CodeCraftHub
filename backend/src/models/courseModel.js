@@ -441,6 +441,51 @@ export class CourseModel {
     const res = await pool.query(sql);
     return res.rows;
   }
+
+  /**
+   * Get aggregate statistics for an instructor
+   *
+   * @param {string} instructorId
+   */
+  static async getInstructorStats(instructorId) {
+    const sql = `
+      SELECT 
+        COUNT(DISTINCT c.id)::INTEGER AS total_courses,
+        COUNT(DISTINCT CASE WHEN c.is_published = true THEN c.id END)::INTEGER AS published_courses,
+        COUNT(DISTINCT CASE WHEN c.is_published = false THEN c.id END)::INTEGER AS draft_courses,
+        COALESCE(SUM(c.enrollment_count), 0)::INTEGER AS total_students_enrolled,
+        ROUND(COALESCE(AVG(c.rating_average), 0), 2) AS average_rating,
+        (
+          SELECT COUNT(l.id)::INTEGER 
+          FROM lessons l 
+          JOIN courses co ON co.id = l.course_id 
+          WHERE co.instructor_id = $1
+        ) AS total_lessons
+      FROM courses c
+      WHERE c.instructor_id = $1;
+    `;
+    const res = await pool.query(sql, [instructorId]);
+    return res.rows[0];
+  }
+
+  /**
+   * Toggle publication status of course
+   *
+   * @param {string} courseId
+   * @param {boolean} isPublished
+   */
+  static async togglePublish(courseId, isPublished) {
+    const res = await pool.query(
+      `UPDATE courses 
+       SET is_published = $1, 
+           published_at = CASE WHEN $1 = true AND published_at IS NULL THEN CURRENT_TIMESTAMP ELSE published_at END,
+           updated_at = CURRENT_TIMESTAMP
+       WHERE id = $2 
+       RETURNING *;`,
+      [isPublished, courseId]
+    );
+    return res.rows[0] || null;
+  }
 }
 
 export default CourseModel;

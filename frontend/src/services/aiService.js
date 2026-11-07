@@ -48,3 +48,4 @@ export const aiService = {
 };
 
 export default aiService;
+

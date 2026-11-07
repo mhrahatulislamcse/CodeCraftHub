@@ -1,4 +1,5 @@
 import { CourseService } from '../services/courseService.js';
+import { CourseModel } from '../models/courseModel.js';
 import { sendSuccess } from '../utils/apiResponse.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 
@@ -61,6 +62,37 @@ export const deleteCourse = asyncHandler(async (req, res) => {
   return sendSuccess(res, {
     data: null,
     message: 'Course deleted successfully',
+  });
+});
+
+/**
+ * Get instructor's own courses (including drafts)
+ * GET /api/v1/courses/instructor/my-courses
+ */
+export const getMyInstructorCourses = asyncHandler(async (req, res) => {
+  const result = await CourseService.listCourses({
+    ...req.query,
+    instructorId: req.user.id,
+    isPublished: undefined, // Include both draft and published
+  }, req.user);
+
+  return sendSuccess(res, {
+    data: result.courses,
+    message: 'Instructor courses retrieved successfully',
+    meta: { pagination: result.pagination },
+  });
+});
+
+/**
+ * Get instructor aggregate metrics & analytics
+ * GET /api/v1/courses/instructor/analytics
+ */
+export const getInstructorAnalytics = asyncHandler(async (req, res) => {
+  const stats = await CourseModel.getInstructorStats(req.user.id);
+
+  return sendSuccess(res, {
+    data: stats,
+    message: 'Instructor analytics retrieved successfully',
   });
 });
 

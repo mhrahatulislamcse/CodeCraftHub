@@ -6,6 +6,8 @@ import {
   updateCourse,
   deleteCourse,
   getCategories,
+  getMyInstructorCourses,
+  getInstructorAnalytics,
 } from '../controllers/courseController.js';
 import { enrollInCourse } from '../controllers/enrollmentController.js';
 import {
@@ -24,8 +26,22 @@ import { authenticate, authorize, optionalAuth } from '../middleware/authMiddlew
 
 const router = Router();
 
-// 1. Categories route (must precede parameterized /:id route)
+// 1. Categories & Instructor Studio routes (must precede parameterized /:id route)
 router.get('/categories', getCategories);
+
+router.get(
+  '/instructor/my-courses',
+  authenticate,
+  authorize('instructor', 'admin'),
+  getMyInstructorCourses
+);
+
+router.get(
+  '/instructor/analytics',
+  authenticate,
+  authorize('instructor', 'admin'),
+  getInstructorAnalytics
+);
 
 // 2. Course Catalog & Discovery
 router.get('/', optionalAuth, validate(courseQueryValidator), listCourses);

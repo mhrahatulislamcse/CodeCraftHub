@@ -53,6 +53,70 @@ export const courseService = {
     const res = await api.get(`/lessons/${lessonId}`);
     return res.data;
   },
+
+  /**
+   * Instructor Studio: Get courses created by current instructor
+   * @param {Object} params 
+   */
+  async getMyInstructorCourses(params = {}) {
+    const res = await api.get('/courses/instructor/my-courses', { params });
+    return res;
+  },
+
+  /**
+   * Instructor Studio: Get aggregate metrics
+   */
+  async getInstructorAnalytics() {
+    const res = await api.get('/courses/instructor/analytics');
+    return res.data;
+  },
+
+  /**
+   * Instructor Studio: Create new course
+   * @param {Object} courseData 
+   */
+  async createCourse(courseData) {
+    const res = await api.post('/courses', courseData);
+    return res.data;
+  },
+
+  /**
+   * Instructor Studio: Update course
+   * @param {string} courseId 
+   * @param {Object} updateData 
+   */
+  async updateCourse(courseId, updateData) {
+    const res = await api.patch(`/courses/${courseId}`, updateData);
+    return res.data;
+  },
+
+  /**
+   * Instructor Studio: Delete course
+   * @param {string} courseId 
+   */
+  async deleteCourse(courseId) {
+    const res = await api.delete(`/courses/${courseId}`);
+    return res.data;
+  },
+
+  /**
+   * Curriculum Builder: Add lesson to course
+   * @param {string} courseId 
+   * @param {Object} lessonData 
+   */
+  async createLesson(courseId, lessonData) {
+    const res = await api.post(`/courses/${courseId}/lessons`, lessonData);
+    return res.data;
+  },
+
+  /**
+   * Curriculum Builder: Delete lesson
+   * @param {string} lessonId 
+   */
+  async deleteLesson(lessonId) {
+    const res = await api.delete(`/lessons/${lessonId}`);
+    return res.data;
+  },
 };
 
 export default courseService;

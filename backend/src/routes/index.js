@@ -8,6 +8,7 @@ import enrollmentRoutes from './enrollmentRoutes.js';
 import progressRoutes from './progressRoutes.js';
 import certificateRoutes from './certificateRoutes.js';
 import aiRoutes from './aiRoutes.js';
+import adminRoutes from './adminRoutes.js';
 
 const router = Router();
 
@@ -29,5 +30,8 @@ router.use('/certificates', certificateRoutes);
 
 // Mount AI Personalized Learning & Skill Gap Engine Routes
 router.use('/ai', aiRoutes);
+
+// Mount Administrator Platform Governance Routes
+router.use('/admin', adminRoutes);
 
 export default router;

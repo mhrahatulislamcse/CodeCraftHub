@@ -260,6 +260,138 @@ export class UserModel {
     await pool.query(sql, values);
     return this.findById(userId);
   }
+
+  /**
+   * Find all users with pagination, role filtering, and search (Admin)
+   *
+   * @param {Object} query - { page, limit, role, search }
+   */
+  static async findAll({ page = 1, limit = 20, role, search } = {}) {
+    const conditions = [];
+    const values = [];
+    let idx = 1;
+
+    if (role && role !== 'all') {
+      conditions.push(`r.name = $${idx}`);
+      values.push(role.toLowerCase());
+      idx++;
+    }
+
+    if (search && search.trim()) {
+      conditions.push(`(
+        u.email ILIKE $${idx} OR 
+        p.first_name ILIKE $${idx} OR 
+        p.last_name ILIKE $${idx}
+      )`);
+      values.push(`%${search.trim()}%`);
+      idx++;
+    }
+
+    const whereClause = conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';
+
+    const countSql = `
+      SELECT COUNT(*)::INTEGER AS total 
+      FROM users u
+      JOIN roles r ON r.id = u.role_id
+      LEFT JOIN user_profiles p ON p.user_id = u.id
+      ${whereClause};
+    `;
+    const countRes = await pool.query(countSql, values);
+    const totalRecords = countRes.rows[0].total;
+
+    const currentPage = Math.max(1, parseInt(page, 10));
+    const pageLimit = Math.max(1, Math.min(100, parseInt(limit, 10)));
+    const offset = (currentPage - 1) * pageLimit;
+
+    const sql = `
+      SELECT 
+        u.id,
+        u.email,
+        r.name AS role,
+        u.is_active,
+        u.email_verified,
+        u.created_at,
+        u.last_login_at,
+        p.first_name,
+        p.last_name,
+        p.headline,
+        p.avatar_url
+      FROM users u
+      JOIN roles r ON r.id = u.role_id
+      LEFT JOIN user_profiles p ON p.user_id = u.id
+      ${whereClause}
+      ORDER BY u.created_at DESC
+      LIMIT $${idx} OFFSET $${idx + 1};
+    `;
+    values.push(pageLimit, offset);
+    const res = await pool.query(sql, values);
+
+    return {
+      users: res.rows,
+      pagination: {
+        totalRecords,
+        currentPage,
+        pageLimit,
+        totalPages: Math.ceil(totalRecords / pageLimit),
+      },
+    };
+  }
+
+  /**
+   * Update user role (Admin)
+   *
+   * @param {string} userId
+   * @param {string} newRoleName
+   */
+  static async updateRole(userId, newRoleName) {
+    const role = await this.findRoleByName(newRoleName);
+    if (!role) {
+      throw new Error(`Role "${newRoleName}" not recognized.`);
+    }
+
+    await pool.query(
+      `UPDATE users SET role_id = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2;`,
+      [role.id, userId]
+    );
+
+    return this.findById(userId);
+  }
+
+  /**
+   * Update user active status (Admin)
+   *
+   * @param {string} userId
+   * @param {boolean} isActive
+   */
+  static async updateStatus(userId, isActive) {
+    await pool.query(
+      `UPDATE users SET is_active = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2;`,
+      [isActive, userId]
+    );
+
+    return this.findById(userId);
+  }
+
+  /**
+   * Get Platform System Analytics (Admin)
+   */
+  static async getPlatformStats() {
+    const sql = `
+      SELECT 
+        (SELECT COUNT(*)::INTEGER FROM users) AS total_users,
+        (SELECT COUNT(*)::INTEGER FROM users u JOIN roles r ON r.id = u.role_id WHERE r.name = 'student') AS total_students,
+        (SELECT COUNT(*)::INTEGER FROM users u JOIN roles r ON r.id = u.role_id WHERE r.name = 'instructor') AS total_instructors,
+        (SELECT COUNT(*)::INTEGER FROM users u JOIN roles r ON r.id = u.role_id WHERE r.name = 'admin') AS total_admins,
+        (SELECT COUNT(*)::INTEGER FROM courses) AS total_courses,
+        (SELECT COUNT(*)::INTEGER FROM courses WHERE is_published = true) AS published_courses,
+        (SELECT COUNT(*)::INTEGER FROM courses WHERE is_published = false) AS draft_courses,
+        (SELECT COUNT(*)::INTEGER FROM enrollments) AS total_enrollments,
+        (SELECT COUNT(*)::INTEGER FROM certificates) AS total_certificates_issued,
+        (SELECT COUNT(*)::INTEGER FROM lessons) AS total_lessons;
+    `;
+    const res = await pool.query(sql);
+    return res.rows[0];
+  }
 }
 
 export default UserModel;
