@@ -7,6 +7,7 @@ import {
   deleteCourse,
   getCategories,
 } from '../controllers/courseController.js';
+import { enrollInCourse } from '../controllers/enrollmentController.js';
 import {
   getCourseLessons,
   createLesson,
@@ -29,6 +30,7 @@ router.get('/categories', getCategories);
 // 2. Course Catalog & Discovery
 router.get('/', optionalAuth, validate(courseQueryValidator), listCourses);
 router.get('/:id', optionalAuth, validate(courseIdParamValidator), getCourse);
+router.post('/:id/enroll', authenticate, validate(courseIdParamValidator), enrollInCourse);
 
 // 3. Course Authoring (Instructors & Administrators)
 router.post(
@@ -65,3 +67,4 @@ router.post(
 );
 
 export default router;
+

@@ -444,3 +444,4 @@ export class CourseModel {
 }
 
 export default CourseModel;
+
