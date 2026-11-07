@@ -39,9 +39,8 @@ export function Sidebar({ collapsed = false, onToggleCollapse, className = '' })
 
   return (
     <aside
-      className={`bg-[#151C31] border-r border-[#27324A] flex flex-col justify-between transition-all duration-300 h-[calc(100vh-4rem)] sticky top-16 select-none ${
-        collapsed ? 'w-20' : 'w-64'
-      } ${className}`}
+      className={`bg-[#151C31] border-r border-[#27324A] flex flex-col justify-between transition-all duration-300 h-[calc(100vh-4rem)] sticky top-16 select-none ${collapsed ? 'w-20' : 'w-64'
+        } ${className}`}
     >
       {/* Top Nav Items */}
       <div className="p-3 space-y-6 overflow-y-auto">
@@ -61,10 +60,9 @@ export function Sidebar({ collapsed = false, onToggleCollapse, className = '' })
                   to={item.to}
                   title={collapsed ? item.label : undefined}
                   className={({ isActive }) =>
-                    `flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium transition-all duration-200 relative group ${
-                      isActive
-                        ? 'bg-[#7C5CFC]/15 text-white font-semibold shadow-sm shadow-[#7C5CFC]/10'
-                        : 'text-[#CBD5E1] hover:text-white hover:bg-[#10182B]'
+                    `flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium transition-all duration-200 relative group ${isActive
+                      ? 'bg-[#7C5CFC]/15 text-white font-semibold shadow-sm shadow-[#7C5CFC]/10'
+                      : 'text-[#CBD5E1] hover:text-white hover:bg-[#10182B]'
                     }`
                   }
                 >
@@ -74,9 +72,8 @@ export function Sidebar({ collapsed = false, onToggleCollapse, className = '' })
                         <span className="absolute left-0 top-1.5 bottom-1.5 w-1 rounded-r-full bg-[#7C5CFC]" />
                       )}
                       <Icon
-                        className={`w-5 h-5 shrink-0 transition-colors ${
-                          isActive ? 'text-[#A78BFA]' : 'text-[#94A3B8] group-hover:text-white'
-                        }`}
+                        className={`w-5 h-5 shrink-0 transition-colors ${isActive ? 'text-[#A78BFA]' : 'text-[#94A3B8] group-hover:text-white'
+                          }`}
                       />
                       {!collapsed && (
                         <div className="flex items-center justify-between flex-1">
@@ -114,10 +111,9 @@ export function Sidebar({ collapsed = false, onToggleCollapse, className = '' })
                     to={item.to}
                     title={collapsed ? item.label : undefined}
                     className={({ isActive }) =>
-                      `flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium transition-all relative group ${
-                        isActive
-                          ? 'bg-[#F59E0B]/15 text-white font-semibold'
-                          : 'text-[#CBD5E1] hover:text-white hover:bg-[#10182B]'
+                      `flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium transition-all relative group ${isActive
+                        ? 'bg-[#F59E0B]/15 text-white font-semibold'
+                        : 'text-[#CBD5E1] hover:text-white hover:bg-[#10182B]'
                       }`
                     }
                   >
@@ -127,9 +123,8 @@ export function Sidebar({ collapsed = false, onToggleCollapse, className = '' })
                           <span className="absolute left-0 top-1.5 bottom-1.5 w-1 rounded-r-full bg-[#F59E0B]" />
                         )}
                         <Icon
-                          className={`w-5 h-5 shrink-0 ${
-                            isActive ? 'text-[#F59E0B]' : 'text-[#94A3B8] group-hover:text-white'
-                          }`}
+                          className={`w-5 h-5 shrink-0 ${isActive ? 'text-[#F59E0B]' : 'text-[#94A3B8] group-hover:text-white'
+                            }`}
                         />
                         {!collapsed && <span>{item.label}</span>}
                       </>
@@ -158,10 +153,9 @@ export function Sidebar({ collapsed = false, onToggleCollapse, className = '' })
                     to={item.to}
                     title={collapsed ? item.label : undefined}
                     className={({ isActive }) =>
-                      `flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium transition-all relative group ${
-                        isActive
-                          ? 'bg-[#EF4444]/15 text-white font-semibold'
-                          : 'text-[#CBD5E1] hover:text-white hover:bg-[#10182B]'
+                      `flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium transition-all relative group ${isActive
+                        ? 'bg-[#EF4444]/15 text-white font-semibold'
+                        : 'text-[#CBD5E1] hover:text-white hover:bg-[#10182B]'
                       }`
                     }
                   >
@@ -171,9 +165,8 @@ export function Sidebar({ collapsed = false, onToggleCollapse, className = '' })
                           <span className="absolute left-0 top-1.5 bottom-1.5 w-1 rounded-r-full bg-[#EF4444]" />
                         )}
                         <Icon
-                          className={`w-5 h-5 shrink-0 ${
-                            isActive ? 'text-[#EF4444]' : 'text-[#94A3B8] group-hover:text-white'
-                          }`}
+                          className={`w-5 h-5 shrink-0 ${isActive ? 'text-[#EF4444]' : 'text-[#94A3B8] group-hover:text-white'
+                            }`}
                         />
                         {!collapsed && <span>{item.label}</span>}
                       </>
@@ -196,10 +189,9 @@ export function Sidebar({ collapsed = false, onToggleCollapse, className = '' })
             to="/design-system"
             title={collapsed ? 'UI Showcase' : undefined}
             className={({ isActive }) =>
-              `flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium transition-all relative group ${
-                isActive
-                  ? 'bg-[#7C5CFC]/20 text-white font-semibold'
-                  : 'text-[#CBD5E1] hover:text-white hover:bg-[#10182B]'
+              `flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium transition-all relative group ${isActive
+                ? 'bg-[#7C5CFC]/20 text-white font-semibold'
+                : 'text-[#CBD5E1] hover:text-white hover:bg-[#10182B]'
               }`
             }
           >

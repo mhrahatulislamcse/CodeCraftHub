@@ -1,9 +1,10 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Card from '../common/Card.jsx';
 import Badge from '../common/Badge.jsx';
 import Button from '../common/Button.jsx';
 import ProgressBar from '../common/ProgressBar.jsx';
-import { Clock, BookOpen, Star, User, PlayCircle, ArrowRight } from 'lucide-react';
+import { Clock, BookOpen, Star, PlayCircle, ArrowRight } from 'lucide-react';
 
 export function CourseCard({
   course,
@@ -13,23 +14,27 @@ export function CourseCard({
   onViewDetails,
   className = '',
 }) {
+  const navigate = useNavigate();
   if (!course) return null;
 
-  const {
-    id,
-    title = 'Untitled Course',
-    description = '',
-    difficulty = 'beginner',
-    categoryName = 'Development',
-    instructorName = 'CodeCraft Instructor',
-    instructorAvatar = null,
-    rating = 4.8,
-    reviewsCount = 42,
-    totalDurationMinutes = 120,
-    totalLessons = 10,
-    thumbnailUrl = null,
-    isEnrolled = progress !== null,
-  } = course;
+  const id = course.id;
+  const title = course.title || 'Untitled Course';
+  const description = course.description || '';
+  const difficulty = course.difficulty_level || course.difficulty || 'beginner';
+  const categoryName = course.categories?.[0]?.name || course.categoryName || 'Engineering';
+  
+  const instructorName = course.instructor
+    ? `${course.instructor.firstName || ''} ${course.instructor.lastName || ''}`.trim() || 'Instructor'
+    : course.instructorName || 'CodeCraft Instructor';
+    
+  const instructorAvatar = course.instructor?.avatarUrl || course.instructorAvatar || null;
+  const rating = parseFloat(course.rating_average ?? course.rating ?? 4.8);
+  const reviewsCount = course.rating_count ?? course.reviewsCount ?? 24;
+  const totalDurationMinutes = course.estimated_hours ? Math.round(course.estimated_hours * 60) : (course.totalDurationMinutes || 180);
+  const totalLessons = course.lessons?.length ?? course.totalLessons ?? (course.estimated_hours ? Math.round(course.estimated_hours * 2) : 10);
+  const thumbnailUrl = course.thumbnail_url || course.thumbnailUrl || null;
+  const isEnrolled = course.isEnrolled || progress !== null;
+  const effectiveProgress = progress !== null ? progress : (course.enrollment?.progress_percentage ?? null);
 
   const difficultyVariantMap = {
     beginner: 'green',
@@ -38,12 +43,20 @@ export function CourseCard({
   };
 
   const formatDuration = (mins) => {
-    if (!mins) return '1h 30m';
+    if (!mins) return '2h 30m';
     const h = Math.floor(mins / 60);
     const m = mins % 60;
     if (h === 0) return `${m}m`;
     if (m === 0) return `${h}h`;
     return `${h}h ${m}m`;
+  };
+
+  const handleCardClick = () => {
+    if (onViewDetails) {
+      onViewDetails();
+    } else {
+      navigate(`/courses/${id}`);
+    }
   };
 
   return (
@@ -52,7 +65,10 @@ export function CourseCard({
       className={`flex flex-col h-full group bg-[#151C31] border-[#27324A] hover:border-[#7C5CFC]/60 transition-all duration-300 ${className}`}
     >
       {/* Thumbnail area */}
-      <div className="relative h-44 w-full bg-[#10182B] overflow-hidden">
+      <div
+        onClick={handleCardClick}
+        className="relative h-44 w-full bg-[#10182B] overflow-hidden cursor-pointer"
+      >
         {thumbnailUrl ? (
           <img
             src={thumbnailUrl}
@@ -91,7 +107,7 @@ export function CourseCard({
       <div className="p-5 flex-1 flex flex-col justify-between">
         <div>
           <h4
-            onClick={onViewDetails}
+            onClick={handleCardClick}
             className="text-base font-semibold text-[#F8FAFC] group-hover:text-[#A78BFA] transition-colors line-clamp-2 cursor-pointer"
           >
             {title}
@@ -129,29 +145,35 @@ export function CourseCard({
           </div>
 
           {/* Progress bar if enrolled */}
-          {isEnrolled && progress !== null && (
+          {isEnrolled && effectiveProgress !== null && (
             <div className="pt-1">
               <ProgressBar
-                value={progress}
+                value={Number(effectiveProgress)}
                 size="sm"
-                variant={progress === 100 ? 'green' : 'purple'}
+                variant={Number(effectiveProgress) === 100 ? 'green' : 'purple'}
                 showLabel
                 label="Course Progress"
               />
             </div>
           )}
 
-          {/* Action button */}
+          {/* Action buttons */}
           <div className="pt-1">
             {isEnrolled ? (
               <Button
-                variant={progress === 100 ? 'secondary' : 'primary'}
+                variant={Number(effectiveProgress) === 100 ? 'secondary' : 'primary'}
                 size="sm"
                 className="w-full"
                 leftIcon={<PlayCircle className="w-4 h-4" />}
-                onClick={onContinue || onViewDetails}
+                onClick={() => {
+                  if (onContinue) {
+                    onContinue();
+                  } else {
+                    navigate(`/learn/${id}`);
+                  }
+                }}
               >
-                {progress === 100 ? 'Review Course' : 'Continue Learning'}
+                {Number(effectiveProgress) === 100 ? 'Review Course' : 'Continue Learning'}
               </Button>
             ) : (
               <div className="flex items-center gap-2">
@@ -159,7 +181,7 @@ export function CourseCard({
                   variant="outline"
                   size="sm"
                   className="flex-1"
-                  onClick={onViewDetails}
+                  onClick={handleCardClick}
                 >
                   Details
                 </Button>
@@ -168,7 +190,14 @@ export function CourseCard({
                   size="sm"
                   className="flex-1"
                   rightIcon={<ArrowRight className="w-3.5 h-3.5" />}
-                  onClick={onEnroll || onViewDetails}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (onEnroll) {
+                      onEnroll();
+                    } else {
+                      navigate(`/courses/${id}`);
+                    }
+                  }}
                 >
                   Enroll
                 </Button>

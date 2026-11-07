@@ -220,11 +220,10 @@ export function Navbar({ onToggleSidebar, isSidebarCollapsed }) {
                           switchMockRole(r);
                           setUserMenuOpen(false);
                         }}
-                        className={`text-[10px] py-1 rounded capitalize font-medium transition ${
-                          role === r
+                        className={`text-[10px] py-1 rounded capitalize font-medium transition ${role === r
                             ? 'bg-[#7C5CFC] text-white'
                             : 'bg-[#151C31] text-[#94A3B8] hover:text-white'
-                        }`}
+                          }`}
                       >
                         {r}
                       </button>
