@@ -35,3 +35,4 @@ export const validate = (validations) => {
 };
 
 export default validate;
+

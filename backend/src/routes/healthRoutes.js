@@ -16,3 +16,4 @@ router.get('/health', getHealth);
 router.get('/info', getInfo);
 
 export default router;
+
