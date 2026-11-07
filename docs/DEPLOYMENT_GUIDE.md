@@ -366,3 +366,4 @@ chmod +x /usr/local/bin/backup-codecrafthub.sh
    - Inspect active connections: `SELECT count(*) FROM pg_stat_activity;`
 3. **High memory alert:**
    - PM2 cluster automatically restarts worker threads if memory exceeds 500MB per instance (`max_memory_restart: '500M'`).
+

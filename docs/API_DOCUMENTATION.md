@@ -625,3 +625,4 @@ Returns global system health, total registered users, completion counts, and ser
 | `DUPLICATE_RESOURCE` | 409 | Resource with the same unique identifier (e.g. email, slug) already exists. |
 | `RATE_LIMIT_EXCEEDED` | 429 | IP or client exceeded window request limits. |
 | `INTERNAL_SERVER_ERROR` | 500 | Unhandled exception trapped by central error handler. |
+
