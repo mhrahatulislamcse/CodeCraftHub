@@ -1,0 +1,79 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: codecrafthub-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME:-codecrafthub_db}
+      POSTGRES_USER: ${DB_USER:-codecrafthub_app}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-SuperSecretDBPassword123!}
+    volumes:
+      - cch_pgdata:/var/lib/postgresql/data
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-codecrafthub_app} -d ${DB_NAME:-codecrafthub_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - cch-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: codecrafthub-backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 5000
+      API_PREFIX: /api/v1
+      CLIENT_URL: ${CLIENT_URL:-http://localhost}
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME:-codecrafthub_db}
+      DB_USER: ${DB_USER:-codecrafthub_app}
+      DB_PASSWORD: ${DB_PASSWORD:-SuperSecretDBPassword123!}
+      DB_SSL: "false"
+      DB_POOL_MAX: 20
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:-c1f4e8b9392c019d84e9d567823abce128374950293847561029384756102938}
+      JWT_ACCESS_EXPIRY: 15m
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-7f9012384a839210bc9384756102938475610293847561029384756102938475}
+      JWT_REFRESH_EXPIRY: 7d
+      PASSWORD_RESET_SECRET: ${PASSWORD_RESET_SECRET:-9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b9c8d7e6f5a4b3c2d1e0f9a8b}
+      RATE_LIMIT_WINDOW_MS: 900000
+      RATE_LIMIT_MAX_REQUESTS: 200
+      AUTH_RATE_LIMIT_WINDOW_MS: 900000
+      AUTH_RATE_LIMIT_MAX_REQUESTS: 10
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+    ports:
+      - "5000:5000"
+    command: >
+      sh -c "node database/migrate.js && node database/seed.js && node src/server.js"
+    networks:
+      - cch-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: codecrafthub-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+    networks:
+      - cch-network
+
+volumes:
+  cch_pgdata:
+    driver: local
+
+networks:
+  cch-network:
+    driver: bridge
