@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Button from '../components/common/Button.jsx';
-import { Home, ArrowLeft, Terminal } from 'lucide-react';
+import { Home, Terminal } from 'lucide-react';
 
 export function NotFound() {
   return (

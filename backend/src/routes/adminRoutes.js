@@ -25,3 +25,4 @@ router.patch('/users/:id/status', updateUserStatus);
 router.patch('/courses/:id/publish', toggleCoursePublish);
 
 export default router;
+

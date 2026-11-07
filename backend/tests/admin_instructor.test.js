@@ -168,3 +168,4 @@ describe('Phase 11 - Instructor and Administrator Dashboards Integration Tests',
     });
   });
 });
+

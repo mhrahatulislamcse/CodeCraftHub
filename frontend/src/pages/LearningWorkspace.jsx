@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { useParams, useSearchParams, Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext.jsx';
+import React, { useState, useEffect } from 'react';
+import { useParams, useSearchParams, Link } from 'react-router-dom';
 import { useNotification } from '../contexts/NotificationContext.jsx';
 import progressService from '../services/progressService.js';
 import courseService from '../services/courseService.js';
@@ -17,19 +16,15 @@ import {
   CheckCircle2,
   Play,
   Pause,
-  RotateCcw,
   Volume2,
   VolumeX,
   Maximize2,
-  BookOpen,
   FileCode2,
   Download,
   ExternalLink,
   Copy,
   Check,
   Award,
-  Sparkles,
-  HelpCircle,
   Menu,
   X,
   Terminal,
@@ -39,8 +34,6 @@ import {
 export function LearningWorkspace() {
   const { courseId } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
-  const navigate = useNavigate();
-  const { user } = useAuth();
   const { toast } = useNotification();
 
   // State
@@ -50,7 +43,6 @@ export function LearningWorkspace() {
   const [activeLesson, setActiveLesson] = useState(null);
   const [lessonDetails, setLessonDetails] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [lessonLoading, setLessonLoading] = useState(false);
   const [completing, setCompleting] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activeTab, setActiveTab] = useState('notes'); // 'notes', 'resources', 'ai'
@@ -62,7 +54,6 @@ export function LearningWorkspace() {
   const [isMuted, setIsMuted] = useState(false);
   const [videoProgress, setVideoProgress] = useState(25);
   const [playbackSpeed, setPlaybackSpeed] = useState(1);
-  const videoRef = useRef(null);
 
   // Initial load: Fetch course progress & curriculum
   useEffect(() => {
@@ -120,7 +111,6 @@ export function LearningWorkspace() {
 
     const loadLessonDetails = async () => {
       try {
-        setLessonLoading(true);
         const res = await courseService.getLessonById(activeLesson.id);
         if (isMounted) {
           setLessonDetails(res.data || res);
@@ -131,10 +121,6 @@ export function LearningWorkspace() {
         console.warn('Could not fetch granular lesson details, using cached syllabus:', err);
         if (isMounted) {
           setLessonDetails(activeLesson);
-        }
-      } finally {
-        if (isMounted) {
-          setLessonLoading(false);
         }
       }
     };

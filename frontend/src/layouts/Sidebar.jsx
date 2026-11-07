@@ -6,7 +6,6 @@ import {
   Compass,
   GraduationCap,
   Sparkles,
-  BookOpenCheck,
   User,
   ShieldAlert,
   FolderKanban,
@@ -18,7 +17,7 @@ import {
 } from 'lucide-react';
 
 export function Sidebar({ collapsed = false, onToggleCollapse, className = '' }) {
-  const { role, user } = useAuth();
+  const { role } = useAuth();
 
   const studentLinks = [
     { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },

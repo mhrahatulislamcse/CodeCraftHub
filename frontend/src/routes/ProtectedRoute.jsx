@@ -6,7 +6,7 @@ import Button from '../components/common/Button.jsx';
 import { ShieldAlert, ArrowLeft } from 'lucide-react';
 
 export function ProtectedRoute({ children, allowedRoles = [] }) {
-  const { user, isAuthenticated, loading, role } = useAuth();
+  const { isAuthenticated, loading, role } = useAuth();
   const location = useLocation();
 
   if (loading) {

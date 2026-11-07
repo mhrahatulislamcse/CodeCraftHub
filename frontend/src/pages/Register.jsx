@@ -6,7 +6,7 @@ import AuthLayout from '../layouts/AuthLayout.jsx';
 import Input from '../components/common/Input.jsx';
 import Select from '../components/common/Select.jsx';
 import Button from '../components/common/Button.jsx';
-import { Mail, Lock, User, ArrowRight, ShieldCheck } from 'lucide-react';
+import { Mail, Lock, ArrowRight } from 'lucide-react';
 
 export function Register() {
   const { register } = useAuth();

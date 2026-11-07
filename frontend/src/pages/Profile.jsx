@@ -5,7 +5,7 @@ import Input from '../components/common/Input.jsx';
 import Textarea from '../components/common/Textarea.jsx';
 import Button from '../components/common/Button.jsx';
 import Badge from '../components/common/Badge.jsx';
-import { User, Mail, Shield, Save } from 'lucide-react';
+import { User, Save } from 'lucide-react';
 
 export function Profile() {
   const { user, updateProfile } = useAuth();

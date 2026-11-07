@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext.jsx';
 import { useNotification } from '../contexts/NotificationContext.jsx';
 import courseService from '../services/courseService.js';
-import Card, { CardHeader, CardTitle, CardContent } from '../components/common/Card.jsx';
+import Card from '../components/common/Card.jsx';
 import Badge from '../components/common/Badge.jsx';
 import Button from '../components/common/Button.jsx';
 import ProgressBar from '../components/common/ProgressBar.jsx';
@@ -17,8 +17,6 @@ import {
   Play,
   PlayCircle,
   Star,
-  Users,
-  ShieldCheck,
   Lock,
   ExternalLink,
   Globe,
@@ -29,7 +27,7 @@ import {
 export function CourseDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated } = useAuth();
   const { toast } = useNotification();
 
   const [course, setCourse] = useState(null);
