@@ -1,19 +1,16 @@
+import { sendError } from '../utils/apiResponse.js';
+
 /**
- * 404 Route Not Found Handler
+ * 404 Route Not Found Middleware
+ * Intercepts unmapped endpoints and produces a structured JSON error envelope.
  */
 export const notFoundHandler = (req, res, next) => {
-  res.status(404).json({
-    success: false,
-    status: 404,
-    error: {
-      message: `Endpoint not found: [${req.method}] ${req.originalUrl}`,
-    },
-    meta: {
-      timestamp: new Date().toISOString(),
-      path: req.originalUrl,
-    },
+  return sendError(res, {
+    message: `Cannot ${req.method} ${req.originalUrl}. Endpoint does not exist.`,
+    statusCode: 404,
+    errorCode: 'ROUTE_NOT_FOUND',
+    req,
   });
 };
 
 export default notFoundHandler;
-

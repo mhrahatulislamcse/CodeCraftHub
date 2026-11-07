@@ -1,50 +1,34 @@
 import express from 'express';
 import helmet from 'helmet';
-import cors from 'cors';
 import morgan from 'morgan';
 import { config } from './config/env.js';
-import apiRouter from './routes/index.js';
+import { corsMiddleware } from './middleware/corsConfig.js';
+import { apiLimiter } from './middleware/rateLimiter.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { notFoundHandler } from './middleware/notFoundHandler.js';
+import apiRouter from './routes/index.js';
 
 const app = express();
 
-// Security HTTP headers
+// 1. HTTP Security Headers
 app.use(helmet());
 
-// CORS configuration
-const allowedOrigins = [
-  config.clientUrl,
-  'http://localhost:5173',
-  'http://localhost:3000',
-  'http://127.0.0.1:5173',
-];
+// 2. Cross-Origin Resource Sharing
+app.use(corsMiddleware);
 
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      // Allow requests with no origin (e.g. mobile apps, curl, postman)
-      if (!origin || allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      }
-      return callback(new Error(`CORS blocked request from origin: ${origin}`));
-    },
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-  })
-);
+// 3. Request Rate Limiting (Applied to all API routes)
+app.use(config.apiPrefix, apiLimiter);
 
-// Request parsing
+// 4. Request Body Parsing with Safety Limits
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Request logging in development
+// 5. HTTP Request Logging (dev format in non-test environments)
 if (config.env !== 'test') {
   app.use(morgan('dev'));
 }
 
-// Welcome route
+// 6. Root Platform Landing Route
 app.get('/', (req, res) => {
   res.status(200).json({
     success: true,
@@ -54,14 +38,13 @@ app.get('/', (req, res) => {
   });
 });
 
-// Mount API v1 router
+// 7. Mount Versioned REST API Router (/api/v1)
 app.use(config.apiPrefix, apiRouter);
 
-// 404 handler
+// 8. Handle 404 Route Not Found
 app.use(notFoundHandler);
 
-// Global error handler
+// 9. Centralized Global Error Handler
 app.use(errorHandler);
 
 export default app;
-
