@@ -16,3 +16,4 @@ router.get('/me', authenticate, getMyCertificates);
 router.get('/verify/:code', validate(certificateCodeParamValidator), verifyCertificate);
 
 export default router;
+

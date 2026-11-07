@@ -24,3 +24,4 @@ router.post('/courses/:id/enroll', authenticate, validate(enrollParamValidator),
 router.get('/:id', authenticate, validate(enrollmentIdParamValidator), getEnrollmentById);
 
 export default router;
+

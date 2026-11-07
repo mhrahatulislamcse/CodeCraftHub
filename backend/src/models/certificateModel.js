@@ -151,3 +151,4 @@ export class CertificateModel {
 }
 
 export default CertificateModel;
+

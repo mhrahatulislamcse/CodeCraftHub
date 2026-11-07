@@ -23,3 +23,4 @@ router.get('/courses/:id', authenticate, validate(courseProgressParamValidator),
 router.post('/lessons/:id/complete', authenticate, validate(lessonProgressValidator), toggleLessonProgress);
 
 export default router;
+
